@@ -49,13 +49,10 @@ while True:
     # om sök-knappen trycks kör sök-funktionen
     if event == '-SEEK-':
 
-        # Är sök rutorna toma sök på allt
-        if value['-seek1-'].strip() == '' or value['-seek2-'].strip() == '':
-            q = db.get_all_data()
-        else:
-            q = db.search(value['-seek1-'], value['-seek2-'])
+        # sök funktion
+        q = db.search(value['-seek1-'], value['-seek2-'])
 
-        # Visa resultat på displayen/tabellen
+        # Visa resultat
         display1.update_display(window, q)
 
 # Stäng fönster

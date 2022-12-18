@@ -1,3 +1,4 @@
+# imports
 from databas import Medlem
 import PySimpleGUI as sg
 
@@ -10,12 +11,36 @@ class Display:
     # placera displayen/tabellen
     def place_display(self):
         head = ['ID', 'Förnamn', 'Efternamn', 'Gatuadress', 'Postnummer', 'Postadress', 'Avgift']
-        return [sg.Table(self.data, head, expand_x=True, key='-tab-')]
+        return [sg.Table(self.data, head, expand_x=True, key='-tab-', auto_size_columns=True, justification='l')]
 
     # updatera displayen/tabellen
     def update_display(self, window, new_data):
         window['-tab-'].update(new_data)
         window.refresh()
+
+def confirm_delete(ID):
+    # bekräftelse layout
+    layout = [
+        [sg.Text(f'Bekräfta borttagning av medlem med ID: {ID}')],
+        [sg.Button('Ta bort', key='del_yes'), sg.Button('Avbryt', key='del_no')]
+    ]
+
+    # bekräftelse fönster
+    confirm_window = sg.Window('Bekräftelse', layout)
+
+    event, value = confirm_window.read()
+    if event == sg.WIN_CLOSED:
+        confirm_window.close()
+
+    # Om användaren bekräftar borttagning
+    if event == 'del_yes':
+        confirm_window.close()
+        return True
+
+    # Om användaren inte bekräftar borttagning
+    if event == 'del_no':
+        confirm_window.close()
+        return False
 
 # Popup fönster klass
 class Popup:
@@ -77,11 +102,16 @@ class Popup:
                 break
 
             if event == 'DEL_DATA':
-                # ta bort data med specificerat ID
-                self.db.delete(value['-del1-'])
 
-                # uppdatera displayen/tabellen
-                self.display.update_display(self.window, self.db.get_all_data())
+                confirm = confirm_delete(value['-del1-'])
+                if confirm:
+                    # ta bort data med specificerat ID
+                    self.db.delete(value['-del1-'])
+                    # uppdatera displayen/tabellen
+                    self.display.update_display(self.window, self.db.get_all_data())
+
+                else:
+                    pass
 
         del_window.close()
 

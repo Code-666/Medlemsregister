@@ -39,8 +39,21 @@ class Databas:
         data = []
         avgift = ''
 
-        # Fråga på för- och efternamn
-        q = self.session.query(Medlem).filter_by(förnamn=fnamn, efternamn=enamn)
+        if fnamn.strip() == '' and enamn.strip() == '':
+            # Fråga på all data
+            q = self.session.query(Medlem).all()
+
+        elif fnamn.strip() == '' and enamn.strip() != '':
+            # Fråga på efternamn
+            q = self.session.query(Medlem).filter_by(efternamn=enamn)
+
+        elif fnamn.strip() != '' and enamn.strip() == '':
+            # Fråga på förnamn
+            q = self.session.query(Medlem).filter_by(förnamn=fnamn)
+
+        else:
+            # Fråga på för- och efternamn
+            q = self.session.query(Medlem).filter_by(förnamn=fnamn, efternamn=enamn)
 
         # För varje medlem som har betalat avgift skriv "betalat" om inte skriv "inte betalat"
         for m in q:
