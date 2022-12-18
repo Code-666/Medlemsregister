@@ -2,12 +2,18 @@
 import PySimpleGUI as sg
 from databas import Databas, Medlem
 from display import Display, Popup
+from os import mkdir
 
 # Tema
 sg.theme('DarkGreen5')
 
+try:
+    mkdir('C:\\db')
+except FileExistsError:
+    print('Fil finns redan')
+
 # Sätt upp och skapa databasen
-db = Databas('sqlite:///C:\\Qdb\\database01.db')
+db = Databas('sqlite:///C:\\db\\database01.db')
 db.create_database()
 
 # Initiera displayen/tabellen med hur databasen ser ut nuvarande

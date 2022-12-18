@@ -80,7 +80,7 @@ class Databas:
             if m.avgift == True:
                 avgift = 'betalat'
             elif m.avgift == False:
-                avgift = 'inte betalat'
+                avgift = 'ej betalat'
 
             # Gör allt till en lista så att det ska gå att få upp på displayen/tabellen
             data.append([m.ID, m.förnamn, m.efternamn, m.gatuadress, m.postnummer, m.postadress, avgift])
