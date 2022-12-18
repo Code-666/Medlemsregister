@@ -36,8 +36,43 @@ class Databas:
 
     # Sök på för- och efternamn
     def search(self, fnamn, enamn):
+        data = []
+        avgift = ''
+
+        # Fråga på för- och efternamn
         q = self.session.query(Medlem).filter_by(förnamn=fnamn, efternamn=enamn)
-        return q
+
+        # För varje medlem som har betalat avgift skriv "betalat" om inte skriv "inte betalat"
+        for m in q:
+            if m.avgift == True:
+                avgift = 'betalat'
+            elif m.avgift == False:
+                avgift = 'inte betalat'
+
+            # Gör allt till en lista så att det ska gå att få upp på displayen/tabellen
+            data.append([m.ID, m.förnamn, m.efternamn, m.gatuadress, m.postnummer, m.postadress, avgift])
+
+        return data
+
+    # Få ut all data i databasen
+    def get_all_data(self):
+        data = []
+        avgift = ''
+
+        # Fråga efter all data
+        q = self.session.query(Medlem).all()
+
+        # För varje medlem som har betalat avgift skriv "betalat" om inte skriv "inte betalat"
+        for m in q:
+            if m.avgift == True:
+                avgift = 'betalat'
+            elif m.avgift == False:
+                avgift = 'inte betalat'
+
+            # Gör allt till en lista så att det ska gå att få upp på displayen/tabellen
+            data.append([m.ID, m.förnamn, m.efternamn, m.gatuadress, m.postnummer, m.postadress, avgift])
+
+        return data
 
 
 # Klass för medlemstabell
